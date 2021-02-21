@@ -6,41 +6,55 @@ html,body{
 	font-family: Helvetica, Roboto, Sans-serif;
 	font-size: 12pt;
 }
+body {
+	margin: 2rem 0;
+}
 body * {
 	transition-duration: 100ms;
-	box-sizing: border-box;
 }
 .heading{
 	margin: 0;
-	padding-block: 1rem;
 	font-size: 1rem;
+	user-select: none;
 }
-
+h1{
+	font-size: 1rem;
+	text-align: center;
+}
+.location>.heading{
+	font-size: 3rem;
+	text-align: center;
+	margin-bottom: 1rem;
+	text-transform: capitalize;
+}
+.location~.location>.heading{
+	margin-top: 1.5rem;
+}
 .category{
 	overflow: scroll hidden;
 	white-space: nowrap;
-	height: 16rem;
-	margin-block: 2rem;
 	filter: drop-shadow(0 0 0.5rem #0002);
+	padding: 0 0 2rem 2rem;
 }
-.category .heading{
+.category>.heading{
 	position: sticky;
 	font-size: 2rem;
-	display: none;
 	left: 0;
-	background: #eee;
+	margin-block: 1rem;
 }
 .category>.snippet{
 	white-space: initial;
 	display: inline-block;
 	margin-right: 1rem;
 	width: 12rem;
-	height: 100%;
-	background: white;
-	padding: 0.5rem;
+	height: 16rem;
+	box-sizing: border-box;
 }
 .category>.snippet.featured{
 	width: 28rem;
+}
+.category>.snippet.featured>.heading{
+	font-size: 1.6rem;
 }
 .category>.snippet.featured>.image{
 	width: 50%;
@@ -55,6 +69,13 @@ body * {
 	color: inherit;
 	overflow: hidden;
 	border: .1rem solid white;
+	background: #f8f8f8;
+	padding: 0.5rem;
+	opacity: 0.8;
+	user-select: none;
+}
+.snippet:hover{
+	opacity: 1;
 }
 .snippet>*{
 	position: relative;

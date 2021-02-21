@@ -4,7 +4,7 @@ main()
 async function main(){
 	const locations = {
 		homepage: {
-			General_Info: 'General Info',
+				General_Info: 'General Info',
 			ASB: 'ASB News',
 			District: 'District News',
 		},
@@ -15,21 +15,22 @@ async function main(){
 			Colleges: 'Colleges',
 			Reference: 'Reference',
 		},
-		// other: {
-		//     Archive: 'Archived Articles',
-		// }
+		other: {
+			Archive: 'Archived Articles',
+		}
 	}
 	let articles = await load(locations,true) // Get cached articles first; Update later
 	update_nav(locations)
 	for(const article of Object.values(articles)){
 		article.Snippet = make_snippet(article)
 		document
-		  .getElementById('category-'+article.category)
-		  .append(article.Snippet)
+			.getElementById('category-'+article.category)
+			.append(article.Snippet)
 	}
+	load(locations,false)
 }
 
-async function load(locations, local=true){
+async function load(locations, local){
 
 	if (local && localStorage.getItem('cache'))
 		return JSON.parse(localStorage.getItem('articles'))
@@ -62,38 +63,44 @@ async function load(locations, local=true){
 }
 
 function update_nav(locations){
-  const Nav = document.querySelector('nav')
-  Nav.append(Location)
-  for(const location in locations){
+	const Nav = document.querySelector('nav')
+	for(const location in locations){
 	let Location = clone_template('location')
 	Location.id = 'location-'+location
 	Location.querySelector('h3').textContent = location
-	Location.hidden = location != 'homepage'
+	//Location.hidden = location != 'homepage'
+	
 	for(const category in locations[location]){
-	  let Category = clone_template('category')
-	  Category.id = 'category-' + category
-	  Category.querySelector('h4').innerHTML = locations[location][category]
-	  Location.append(Category)
+		let Category = clone_template('category')
+		Category.id = 'category-' + category
+		Category.querySelector('h4').innerHTML = locations[location][category]
+		Location.append(Category)
 	}
 	Nav.append(Location)
-  }
+	}
 }
 
 function make_snippet(article){
 	let Snippet = clone_template('snippet')
 	Snippet.href = '#article-'+article.id
 	Snippet.classList.toggle('featured',article.featured)
-	if(article.images)
-	  Snippet.querySelector('.image').src =
-	  Snippet.querySelector('.blur').src = article.images[0]
-	for(const attribute of ['title','body','date'])
+	
+	for(const name of ['image','blur']){
+		const element = Snippet.querySelector('.'+name)
+		if(article.images)
+		element.src = article.images[0]
+		else
+		element.hidden = true
+	}
+	
+	for(const attribute of ['title','body'])
 		Snippet.querySelector('.'+attribute).innerHTML = article[attribute]
 	return Snippet
 }
 
 
 function clone_template(name){
-  return document.querySelector('.template-'+name)
+	return document.querySelector('.template-'+name)
 	.content.cloneNode(true)
 	.querySelector('*')
 }
