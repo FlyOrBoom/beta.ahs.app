@@ -42,22 +42,30 @@
 			</footer>
 		</main>
 		
-		<template class='template-location'><section>
-			<h3>Location (Homepage)</h3>
-			<!-- template: section -->
-		</section></template>
+		<template class='template-location'>
+      <section class='location'>
+        <h3 class='heading'>Location (Homepage)</h3>
+        <!-- template: section -->
+      </section>
+    </template>
 
-		<template class='template-section'><section>
-			<h4>Section (District News)</h4>
-			<!-- template: snippet -->
-		</section></template>
+		<template class='template-category'>
+      <section class='category'>
+        <h4 class='heading'>Category (District News)</h4>
+        <!-- template: snippet -->
+      </section>
+    </template>
 		
-		<template class='template-snippet'><a href='#article-id'>
-			<img class='image' alt='Article image'>
-			<h3 class='title'>Men Walk On Moon</h3>
-			<p class='snippet'>Astronauts land on plain; collect rocks, plant flag</p>
-		</a></template>
-		
+		<template class='template-snippet'>
+      <a class='snippet' href='#article-id'>
+        <img class='image' alt='Article image'>
+        <time class='date'>July 20, 1969</time>
+        <h3 class='title'>Men Walk On Moon</h3>
+        <p class='body'>Astronauts land on plain; collect rocks, plant flag</p>
+      </a>
+    </template>
+
+
 		<script src='script.js'></script>
 	</body>
 </html>
