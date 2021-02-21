@@ -180,7 +180,7 @@ async function make_snippet(article) {
 	return Snippet
 }
 
-function gradient_background(element, image) {
+async function gradient_background(element, image) {
 	image.crossOrigin = 'Anonymous';
 	image.addEventListener('load', () => {
 		Canvas.ctx.drawImage(image, 0, 0, Canvas.width, Canvas.height)
