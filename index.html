@@ -1,53 +1,63 @@
 <!DOCTYPE html>
 <html lang='en-US' dir='ltr'>
-
 <head>
-    <meta charset='utf-8'>
+	<meta charset='utf-8'>
 
-    <title>ahs.app</title>
-    <meta name='description' content='We keep you up to date with Arcadia High.'>
-    <meta name='author' content='Arcadia High Mobile Team'>
-    <meta name='web-author' content='Xing Liu'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	<title>ahs.app</title>
+	<meta name='description' content='We keep you up to date with Arcadia High.'>
+	<meta name='author' content='Arcadia High Mobile Team'>
+	<meta name='web-author' content='Xing Liu'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
-    <link rel='icon' type='image/png' href='/icon.png'>
-    <link rel='stylesheet' href='/style.css'>
+	<link rel='icon' type='image/png' href='/icon.png'>
+	<link rel='stylesheet' href='/style.css'>
 </head>
-
 <body>
-<h1 class='heading'>ahs.app</h1>
-<!-- Template: location -->
-<main>
-  <article class='article'>
-    <h2 class='title heading'></h2>
-    <address class='author'></address>
-    <time class='date'></time>
-    <article class='body'></article>
-  </article>
-</main>
+	<h1 class='heading'>ahs.app</h1>
+	<!-- Template: location -->
+	<main>
+		<article class='article'>
+			<h2 class='title heading'></h2>
+			<address class='author'></address>
+			<time class='date'></time>
+			<article class='body'></article>
+		</article>
+	</main>
+	<footer>
+		<strong>ahs.app</strong>
+		<p>
+			is designed and programmed by <a href='https://x-ing.space'>Xing</a>.
+		</p>
+		<p>
+			Have a phone? Get Arcadia High Mobile for
+			<a href='https://apps.apple.com/us/app/id1305220468'>iOS</a>
+			and
+			<a href='https://play.google.com/store/apps/details?id=com.hsappdev.ahs'>Android</a>.
+		</p>
+	</footer>
 
-<template class='template-location'>
-  <section class='location'>
-    <h3 class='heading'></h3>
-    <!-- template: section -->
-  </section>
-</template>
+	<template class='template-location'>
+		<section class='location'>
+			<h3 class='heading'></h3>
+			<!-- template: section -->
+		</section>
+	</template>
 
-<template class='template-category'>
-  <section class='category'>
-    <h4 class='heading'></h4>
-    <!-- template: snippet -->
-  </section>
-</template>
+	<template class='template-category'>
+		<section class='category'>
+			<h4 class='heading'></h4>
+			<div class='carousel'>
+				<!-- template: snippet -->
+			</div>
+		</section>
+	</template>
 
-<template class='template-snippet'>
-  <a class='snippet' href='#article-id'>
-    <img class='image' alt='Article image'>
-    <h3 class='title heading'></h3>
-  </a>
-</template>
-
-    <script src='/script.js'></script>
+	<template class='template-snippet'>
+		<a class='snippet' href='#article-id'>
+			<img class='image' alt='Article image'>
+			<h3 class='title heading'></h3>
+		</a>
+	</template>
+	<script src='/script.js'></script>
 </body>
-
 </html>
