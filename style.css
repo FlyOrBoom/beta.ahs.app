@@ -1,66 +1,55 @@
 html{
-	font-family: Helvetica, Roboto, Sans-serif;
-	font-size: 12pt;
-	margin: 0;
+  font-family: Helvetica, Roboto, Sans-serif;
+  font-size: 12pt;
+  margin: 0;
 }
 body{
-	margin: 2rem 0 50vh 0;
-	background: white;
+  margin: 2rem 0 50vh 0;
+  background: white;
 }
 body * {
-	transition-duration: 100ms;
+  transition-duration: 100ms;
 }
 .heading{
-	margin: 0;
-	font-size: 1rem;
+  margin: 0;
+  font-size: 1rem;
 }
 address{
-	font-style: normal;
+  font-style: normal;
 }
 h1{
-	font-size: 1rem;
-	text-align: center;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .snippet{
-	display: block;
-	position: relative;
-	text-decoration: none;
-	color: inherit;
-	overflow: hidden;
-	padding: 0.5rem;
-	opacity: 0.8;
-	user-select: none;
+  display: block;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  padding: 0.5rem;
+  opacity: 0.8;
+  user-select: none;
 }
 .snippet:hover{
-	opacity: 1;
+  opacity: 1;
 }
 .snippet>*{
-	position: relative;
+  position: relative;
 }
 .snippet>.image{
-	width: 100%;
-	height: 50%;
-	object-fit: cover;
-}
-.snippet>.blur{
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	position: absolute;
-	filter: blur(5rem) saturate(2000%);
-	opacity: 0.2;
-}
-.snippet:hover>.blur{
-	opacity: 0.5;
+  width: 100%;
+  height: 50%;
+  object-fit: cover;
 }
 
 .snippet,.article{
-	border: .1rem solid white;
-	background: #f8f8f8;
+  border: .1rem solid white;
+  background: #f8f8f8;
 }
 .category,.article{
-	filter: drop-shadow(0 0 0.5rem #0002);
+  filter: drop-shadow(0 0 0.5rem #0002);
 }
 /*//////////////////*/
 /*//////////////////*/
@@ -70,53 +59,53 @@ h1{
 /*//////////////////*/
 /*//////////////////*/
 main{
-	position: fixed;
-	overflow: hidden scroll;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: inherit;
-	z-index: 100;
+  position: fixed;
+  overflow: hidden scroll;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  z-index: 100;
 }
 main:not(.open){
-	opacity: 0;
-	pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }
 .article{
-	margin: 2rem;
-	padding: 2rem;
-	min-height: calc(100% - 4rem);
-	overflow: hidden;
-	box-sizing: border-box;
+  margin: 2rem;
+  padding: 2rem;
+  min-height: calc(100% - 4rem);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 .article:focus{
-	outline: 0;
+  outline: 0;
 }
 .article>*{
-	display: block;
-	width: 100%;
-	max-width: 30rem;
-	margin: 0 auto 1rem auto;
+  display: block;
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 auto 1rem auto;
 }
 .article>.heading{
-	font-size: 2rem;
-	line-height: 1.2;
+  font-size: 2rem;
+  line-height: 1.2;
 }
 .article>.author{
-	font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 .article>.author:empty{
-	display: none;
+  display: none;
 }
 .article>.author::before{
-	content: 'by '
+  content: 'by '
 }
 .article>.body{
-	line-height: 1.4;
+  line-height: 1.4;
 }
 .article>header{
-	display: none;
+  display: none;
 }
 /*//////////////////*/
 /*//////////////////*/
@@ -127,42 +116,42 @@ main:not(.open){
 /*//////////////////*/
 
 .location>.heading{
-	font-size: 3rem;
-	text-align: center;
-	margin-bottom: 1rem;
-	text-transform: capitalize;
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  text-transform: capitalize;
 }
 .location~.location>.heading{
-	margin-top: 1rem;
+  margin-top: 1rem;
 }
 .category{
-	overflow: scroll hidden;
-	white-space: nowrap;
-	padding: 0 0 2rem 2rem;
+  overflow: scroll hidden;
+  white-space: nowrap;
+  padding: 0 0 2rem 2rem;
 }
 .category>.heading{
-	position: sticky;
-	font-size: 2rem;
-	left: 0;
-	margin-block: 1rem;
+  position: sticky;
+  font-size: 2rem;
+  left: 0;
+  margin-block: 1rem;
 }
 .category>.snippet{
-	white-space: initial;
-	display: inline-block;
-	margin-right: 1rem;
-	width: 12rem;
-	height: 16rem;
-	box-sizing: border-box;
+  white-space: initial;
+  display: inline-block;
+  margin-right: 1rem;
+  width: 12rem;
+  height: 16rem;
+  box-sizing: border-box;
 }
 .category>.snippet.featured{
-	width: 28rem;
+  width: 28rem;
 }
 .category>.snippet.featured>.heading{
-	font-size: 1.4rem;
+  font-size: 1.4rem;
 }
 .category>.snippet.featured>.image{
-	width: 50%;
-	height: 100%;
-	float: right;
-	margin-left: 0.5rem;
+  width: 50%;
+  height: 100%;
+  float: right;
+  margin-left: 0.5rem;
 }
