@@ -35,9 +35,7 @@ Canvas.ctx = Canvas.getContext('2d')
 main()
 
 async function main() {
-	if (window.location.pathname)
-		show_article()
-
+	show_article()
 	make_locations(locations)
 	load(locations, true)
 		.then(articles => update_snippets(locations, articles))
@@ -54,11 +52,7 @@ async function main() {
 		history.pushState({}, '', '/')
 	})
 
-	window.addEventListener('popstate', event => {
-		if (location.pathname) return
-		close_article()
-	})
-
+	window.addEventListener('popstate', show_article)
 	Canvas.width = Canvas.height = 4
 	Canvas.ctx.filter = 'saturate(1000%)'
 }
@@ -66,6 +60,7 @@ async function close_article() {
 	Main.classList.remove('open')
 }
 async function show_article() {
+	if(window.location.pathname==='/') return close_article()
 	const [location_index, category_index, ...id_array] = atob(window.location.pathname.split('/')[2])
 	const location = Object.keys(locations)[location_index]
 	const category = Object.keys(locations[location])[category_index]
