@@ -54,15 +54,12 @@ async function main() {
     })
 }
 async function show_article() {
-    try {
-        const [location_index, category_index, ...id_array] = atob(window.location.pathname.split('/')[2])
-    } catch (e) {
-        return false
-    }
+    const [location_index, category_index, ...id_array] = atob(window.location.pathname.split('/')[2])
     const location = Object.keys(locations)[location_index]
     const category = Object.keys(locations[location])[category_index]
     const id = id_array.join('')
     const remote = await db(location + '/' + category + '/' + id)
+    if(!remote) return false
     const article = article_from_remote(id, location, category, remote)
     for (const property of Object.values(map)) {
         const element = Main.querySelector('.' + property)
