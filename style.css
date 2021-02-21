@@ -1,71 +1,85 @@
-[hidden] {
+[hidden]{
 	display: none;
 }
-
-html,
-body {
-	background: #eee;
+html,body{
+	background: #fff;
 	font-family: Helvetica, Roboto, Sans-serif;
+	font-size: 12pt;
 }
-
 body * {
 	transition-duration: 100ms;
 	box-sizing: border-box;
 }
-
-.heading {
+.heading{
 	margin: 0;
 	padding-block: 1rem;
 	font-size: 1rem;
 }
 
-.category {
+.category{
 	overflow: scroll hidden;
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	height: 18rem;
-	margin-block: 1rem;
-	gap: 1rem;
+	white-space: nowrap;
+	height: 16rem;
+	margin-block: 2rem;
+	filter: drop-shadow(0 0 0.5rem #0002);
 }
-
-.category .heading {
+.category .heading{
 	position: sticky;
 	font-size: 2rem;
 	display: none;
 	left: 0;
+	background: #eee;
+}
+.category>.snippet{
+	white-space: initial;
+	display: inline-block;
+	margin-right: 1rem;
+	width: 12rem;
+	height: 100%;
 	background: white;
+	padding: 0.5rem;
 }
-
-.category>* {
-	width: 16rem;
-	flex-basis: 8rem;
+.category>.snippet.featured{
+	width: 28rem;
 }
-
-.category>:nth-child(2) {
-	flex-basis: 16rem;
+.category>.snippet.featured>.image{
+	width: 50%;
+	height: 100%;
+	float: right;
+	margin-left: 0.5rem;
 }
-
-.snippet {
+.snippet{
 	display: block;
+	position: relative;
 	text-decoration: none;
 	color: inherit;
 	overflow: hidden;
+	border: .1rem solid white;
 }
-
-.snippet>.body {
+.snippet>*{
+	position: relative;
+}
+.snippet>.body{
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
-
-.snippet>.body * {
+.snippet>.body *{
 	display: contents;
 }
-
-.snippet>.image {
+.snippet>.image{
 	width: 100%;
 	height: 50%;
 	object-fit: cover;
+}
+.snippet>.blur{
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	position: absolute;
+	filter: blur(5rem) saturate(2000%);
+	opacity: 0.2;
+}
+.snippet:hover>.blur{
+	opacity: 0.5;
 }
