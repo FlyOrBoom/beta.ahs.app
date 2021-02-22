@@ -114,7 +114,9 @@ async function update_snippets(articles) {
 
 	for (const [index,cache] of caches.entries()){
 		const [ ,category] = categories[index].split('/')
-		document.getElementById('category-'+category).querySelector('.carousel').append(...cache)
+		document.getElementById('category-'+category)
+			.querySelector('.carousel')
+			.replaceChildren(...cache)
 	}
 }
 async function make_snippet(article) {
