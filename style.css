@@ -13,9 +13,6 @@ body * {
 }
 
 /* RESET */
-address{
-	font-style: normal;
-}
 h1,h2,h3,h4,h5,h6{
 	margin: 0;
 }
@@ -134,14 +131,14 @@ main[hidden]{
 .article>.carousel:empty{
 	display: none;
 }
-.article>.author{
-	font-size: 1.5rem;
-}
-.article>.author:empty{
+.article .author:empty{
 	display: none;
 }
-.article>.author::before{
-	content: 'by '
+.article .author::before{
+	content: 'by ';
+}
+.article .author::after{
+	content: ' · '
 }
 .article>.body{
 	line-height: 1.4;
