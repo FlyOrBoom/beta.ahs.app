@@ -69,6 +69,7 @@ async function show_article() {
 	
 	const media = Main.querySelector('.media')
 	const media_cache = []
+	console.log(article.videos)
 	if(article.videos) for (const id of article.videos){
 		const embed = clone_template('youtube')
 		embed.src += id
