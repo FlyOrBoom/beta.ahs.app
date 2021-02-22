@@ -10,11 +10,17 @@ const map = {
 	articleUnixEpoch: 'timestamp',
 	articleDate: 'date',
 }
-const locations = {
-	homepage: ['General_Info','ASB','District'],
-	bulletin: ['Academics','Athletics','Clubs','Colleges','Reference'],
-	other: ['Archive'],
-}
+const categories = [ 
+	'homepage/General_Info', 
+	'homepage/ASB', 
+	'homepage/District', 
+	'bulletin/Academics', 
+	'bulletin/Athletics', 
+	'bulletin/Clubs', 
+	'bulletin/Colleges', 
+	'bulletin/Reference', 
+	'other/Archive' 
+]
 
 const Main = document.querySelector('main')
 const Canvas = document.createElement('canvas')
@@ -24,10 +30,10 @@ main()
 
 async function main() {
 	show_article()
-	make_locations(locations)
-	load(locations, true)
-		.then(articles => update_snippets(locations, articles))
-		.then(load(locations, false))
+	load(true)
+		.then(update_snippets)
+		.then(load)
+		.then(update_snippets)
 
 	Main.addEventListener('click', event => {
 		if (event.target !== Main) return
@@ -36,7 +42,7 @@ async function main() {
 	})
 
 	window.addEventListener('popstate', show_article)
-	Canvas.width = Canvas.height = 4
+	Canvas.width = Canvas.height = 1
 	Canvas.ctx.filter = 'saturate(1000%)'
 }
 async function close_article() {
@@ -44,17 +50,16 @@ async function close_article() {
 }
 async function show_article() {
 	if(window.location.pathname==='/') return close_article()
-	const [location_index, category_index, ...id_array] = atob(window.location.pathname.split('/')[2])
-	const location = Object.keys(locations)[location_index]
-	const category = locations[location][category_index]
+	const [index, ...id_array] = atob(window.location.pathname.split('/')[2])
+	const [location,category] = categories[index].split('/')
 	const id = id_array.join('')
 	let article
 	if (localStorage.getItem('cache')) {
 		article = JSON.parse(localStorage.getItem('articles'))[id]
 	} else {
-		const remote = await db(location + '/' + category + '/' + id)
+		const remote = await db(location,category,id)
 		if (!remote) return false
-		article = article_from_remote(id, location, category, remote)
+		article = article_from_remote(remote.data,...remote.path)
 	}
 	for (const property of Object.values(map)) {
 		const element = Main.querySelector('.' + property)
@@ -63,31 +68,22 @@ async function show_article() {
 	}
 	Main.classList.add('open')
 }
-async function load(locations, local) {
-
+async function load(local) {
 	if (local && localStorage.getItem('cache'))
 		return JSON.parse(localStorage.getItem('articles'))
 
 	const articles = {}
-	for (const location in locations) {
-		const data = await db(location)
-		for (const category in data) {
-			for (const id in data[category]) {
-				articles[id] = article_from_remote(id, location, category, data[category][id])
-			}
-		}
-	}
+	for await (const {data,path} of categories.map(path=>db(...path.split('/'))))
+		for (const id in data)
+			articles[id] = article_from_remote(data[id],...path,id)
+
 	localStorage.setItem('cache', 'true')
 	localStorage.setItem('articles', JSON.stringify(articles))
 	return articles
 }
 
-function article_from_remote(id, location, category, remote) {
-	const article = {
-		id,
-		location,
-		category
-	}
+function article_from_remote(remote,location,category,id) {
+	const article = { location, category, id }
 	for (const property in remote)
 		article[map[property]] = remote[property]
 	article.date = new Date(article.timestamp * 1000).toLocaleDateString(undefined, {
@@ -98,38 +94,23 @@ function article_from_remote(id, location, category, remote) {
 	return article
 }
 
-async function db(path) {
-	const response = await fetch(`https://arcadia-high-mobile.firebaseio.com/${path}.json`)
+async function db(...path) {
+	const response = await fetch(`https://arcadia-high-mobile.firebaseio.com/${path.join('/')}.json`)
 	const data = await response.json()
-	return data
+	return { data, path }
 }
 
-async function make_locations() {
-	let elements = []
-	for (const location in locations) {
-		let Location = clone_template('location')
-		Location.id = 'location-' + location
-		Location.querySelector('h3').textContent = location
-		for (const category in locations[location]) {
-			let Category = clone_template('category')
-			Category.id = 'category-' + category
-			Category.querySelector('h4').innerHTML = locations[location][category]
-			Location.append(Category)
-		}
-		elements.push(Location)
-	}
-	Main.after(...elements)
-}
-async function update_snippets(locations, articles) {
-	for (const Carousel of document.getElementsByClassName('carousel'))
-		Carousel.replaceChildren()
-	for (const article of Object.values(articles).sort((a, b) => b.timestamp - a.timestamp)) {
-		make_snippet(article).then(Snippet => {
-			document
-				.getElementById('category-' + article.category)
-				.querySelector('.carousel')
-				.append(Snippet)
-		})
+async function update_snippets(articles) {
+	const caches = categories.map(()=>[])
+	for await (const { article, Snippet } of
+		Object.values(articles)
+		.sort((a, b) => b.timestamp - a.timestamp)
+		.map(make_snippet))
+		caches[categories.indexOf(article.location+'/'+article.category)].push(Snippet)
+
+	for (const [index,cache] of caches.entries()){
+		const [ ,category] = categories[index].split('/')
+		document.getElementById('category-'+category).querySelector('.carousel').append(...cache)
 	}
 }
 async function make_snippet(article) {
@@ -137,13 +118,11 @@ async function make_snippet(article) {
 	Snippet.href = '/' +
 		slugify(article.title) +
 		'/' +
-		btoa([
-			Object.keys(locations).indexOf(article.location),
-			locations[article.location].indexOf(article.category),
-			article.id,
-		].join(''))
+		btoa(
+			categories.indexOf(article.location+'/'+article.category)
+			+article.id
+		)
 	Snippet.classList.toggle('featured', article.featured)
-
 	const Image = Snippet.querySelector('.image')
 	if (article.images) {
 		Image.src = article.images[0]
@@ -160,35 +139,21 @@ async function make_snippet(article) {
 		show_article()
 		event.preventDefault()
 	})
-	return Snippet
+	return { article, Snippet }
 }
 
 async function gradient_background(element, image) {
 	image.crossOrigin = 'Anonymous'
 	image.addEventListener('load', () => {
-		Canvas.ctx.drawImage(image, 0, 0, Canvas.width, Canvas.height)
-		const data = Canvas.ctx.getImageData(0, 0, Canvas.width, Canvas.height).data
-		let colors = []
-		for (let i = 0; i < Canvas.width * Canvas.height * 4; i += 4) {
-			colors.push(`rgba(${data[i+0]}, ${data[i+1]}, ${data[i+2]}, 0.1)`)
-		}
-		let gradients = Array(5).fill(0).map(
-			_ => `radial-gradient(
-        ${rand_corner()},
-        ${rand_value(colors)},${rand_value(colors)},
-        transparent)`
-		)
-		gradients.unshift(`radial-gradient(${rand_corner()},transparent,white)`)
-		element.style.backgroundImage = gradients.join(',')
+		Canvas.ctx.drawImage(image, 0, 0, 1, 1)
+		const data = Canvas.ctx.getImageData(0, 0, 1, 1).data
+		let color = `rgba(${data[0]}, ${data[1]}, ${data[2]}, 0.2)`
+		let gradients = `
+			radial-gradient(circle at 100% 100%,${color},transparent),
+			radial-gradient(circle at 0% 0%,transparent,white)
+		`
+		element.style.backgroundImage = gradients
 	})
-}
-
-function rand_value(array) {
-	return array[Math.floor(Math.random() * array.length)]
-}
-
-function rand_corner() {
-	return 'circle at ' + rand_value(['top left', 'top right', 'bottom left', 'bottom right'])
 }
 
 function slugify(text) {
