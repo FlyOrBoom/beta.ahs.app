@@ -11,21 +11,9 @@ const map = {
 	articleDate: 'date',
 }
 const locations = {
-	homepage: {
-		General_Info: 'General Info',
-		ASB: 'ASB News',
-		District: 'District News',
-	},
-	bulletin: {
-		Academics: 'Academics',
-		Athletics: 'Athletics',
-		Clubs: 'Clubs',
-		Colleges: 'Colleges',
-		Reference: 'Reference',
-	},
-	other: {
-		Archive: 'Archived Articles',
-	}
+	homepage: ['General_Info','ASB','District'],
+	bulletin: ['Academics','Athletics','Clubs','Colleges','Reference'],
+	other: ['Archive'],
 }
 
 const Main = document.querySelector('main')
@@ -40,11 +28,6 @@ async function main() {
 	load(locations, true)
 		.then(articles => update_snippets(locations, articles))
 		.then(load(locations, false))
-
-	setInterval(() => {
-		load(locations, false)
-			.then(articles => update_snippets(locations, articles))
-	}, 60 * 1000)
 
 	Main.addEventListener('click', event => {
 		if (event.target !== Main) return
@@ -63,7 +46,7 @@ async function show_article() {
 	if(window.location.pathname==='/') return close_article()
 	const [location_index, category_index, ...id_array] = atob(window.location.pathname.split('/')[2])
 	const location = Object.keys(locations)[location_index]
-	const category = Object.keys(locations[location])[category_index]
+	const category = locations[location][category_index]
 	const id = id_array.join('')
 	let article
 	if (localStorage.getItem('cache')) {
@@ -156,7 +139,7 @@ async function make_snippet(article) {
 		'/' +
 		btoa([
 			Object.keys(locations).indexOf(article.location),
-			Object.keys(locations[article.location]).indexOf(article.category),
+			locations[article.location].indexOf(article.category),
 			article.id,
 		].join(''))
 	Snippet.classList.toggle('featured', article.featured)
