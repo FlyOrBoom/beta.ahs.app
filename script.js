@@ -23,6 +23,7 @@ const categories = [
 ]
 
 const Main = document.querySelector('main')
+const Title = document.querySelector('h1>a')
 const Canvas = document.createElement('canvas')
 Canvas.ctx = Canvas.getContext('2d')
 
@@ -36,20 +37,19 @@ async function main() {
 		.then(update_snippets)
 
 	Main.addEventListener('click', event => {
-		if (event.target !== Main) return
-		close_article()
+		Main.hidden = event.target === Main
 		history.pushState({}, '', '/')
 	})
+	Title.addEventListener('click', internal_link)
 
 	window.addEventListener('popstate', show_article)
 	Canvas.width = Canvas.height = 1
 	Canvas.ctx.filter = 'saturate(1000%)'
 }
-async function close_article() {
-	Main.classList.remove('open')
-}
 async function show_article() {
-	if(window.location.pathname==='/') return close_article()
+	Main.hidden = window.location.pathname==='/'
+	if(Main.hidden) return
+	window.scrollTo(0,0)
 	const [index, ...id_array] = atob(window.location.pathname.split('/')[2])
 	const [location,category] = categories[index].split('/')
 	const id = id_array.join('')
@@ -66,7 +66,6 @@ async function show_article() {
 		if (!element) continue
 		element.innerHTML = article[property]
 	}
-	Main.classList.add('open')
 }
 async function load(local) {
 	if (local && localStorage.getItem('cache'))
@@ -140,14 +139,14 @@ async function make_snippet(article) {
 	for (const attribute of ['title'])
 		Snippet.querySelector('.' + attribute).innerHTML = article[attribute]
 
-	Snippet.addEventListener('click', event => {
-		history.pushState({}, '', Snippet.href)
-		show_article()
-		event.preventDefault()
-	})
+	Snippet.addEventListener('click', internal_link)
 	return { article, Snippet }
 }
-
+function internal_link(event){
+	history.pushState({}, '', event.target.href)
+	show_article()
+	event.preventDefault()
+}
 async function gradient_background(element, image) {
 	image.crossOrigin = 'Anonymous'
 	image.addEventListener('load', () => {
