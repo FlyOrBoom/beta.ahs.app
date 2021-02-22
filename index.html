@@ -18,6 +18,7 @@
 	<main>
 		<article class='article'>
 			<h2 class='title heading'></h2>
+			<section class='media carousel'></section>
 			<address class='author'></address>
 			<time class='date'></time>
 			<section class='body'></section>
@@ -84,10 +85,21 @@
 		</p>
 	</footer>
 	<template class='template-snippet'>
-		<a class='snippet' href='#article-id'>
+		<a class='snippet'>
 			<img class='image' alt='' loading='lazy'>
 			<h4 class='title heading'></h4>
 		</a>
+	</template>
+	<template class='template-youtube'>
+		<iframe class='youtube'
+			src='https://www.youtube-nocookie.com/embed/'
+			frameborder='0'
+			allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+			allowfullscreen
+		></iframe>
+	</template>
+	<template class='template-image'>
+		<img class='image'>
 	</template>
 	<script src='/script.js'></script>
 </body>

@@ -66,6 +66,20 @@ async function show_article() {
 		if (!element) continue
 		element.innerHTML = article[property]
 	}
+	
+	const media = Main.querySelector('.media')
+	const media_cache = []
+	if(article.videos) for (const id of article.videos){
+		const embed = clone_template('youtube')
+		embed.src += id
+		media_cache.push(embed)
+	}
+	if(article.images) for (const url of article.images){
+		const image = clone_template('image')
+		image.src = url
+		media_cache.push(image)
+	}
+	media.replaceChildren(...media_cache)
 }
 async function load(local) {
 	if (local && localStorage.getItem('cache'))
