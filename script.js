@@ -74,15 +74,19 @@ async function load(local) {
 
 	const articles = {}
 	for await (const {data,path} of categories.map(path=>db(...path.split('/'))))
-		for (const id in data)
-			articles[id] = article_from_remote(data[id],...path,id)
+		for await (
+			const article of
+			Object.entries(data)
+			.map(([id,remote])=>article_from_remote(remote,...path,id))
+		)
+			articles[article.id] = article
 
 	localStorage.setItem('cache', 'true')
 	localStorage.setItem('articles', JSON.stringify(articles))
 	return articles
 }
 
-function article_from_remote(remote,location,category,id) {
+async function article_from_remote(remote,location,category,id) {
 	const article = { location, category, id }
 	for (const property in remote)
 		article[map[property]] = remote[property]
